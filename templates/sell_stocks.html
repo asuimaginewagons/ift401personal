@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+<!-- Extending the base template for consistent layout -->
+
+{% block title %}Sell Stocks{% endblock %}
+<!-- Setting the page title to "Sell Stocks" -->
+
+{% block content %}
+<style>
+    /* Card styling for the Sell Stocks form */
+    .sell-stocks-card {
+        background-color: #f8f9fa; /* Light background */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        padding: 20px; /* Padding inside the card */
+    }
+
+    /* Styling for select and input fields */
+    .form-select, .form-control {
+        border: 2px solid #007bff; /* Blue border */
+        border-radius: 5px; /* Slightly rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Light shadow for inputs */
+    }
+
+    /* Hover effect for the sell button */
+    .sell-button:hover {
+        transform: translateY(-2px); /* Slight lift on hover */
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+
+</style>
+
+<!-- Main container for the sell stocks section -->
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Card containing the sell stocks form -->
+            <div class="sell-stocks-card">
+                <h2 class="text-center">Sell Stocks</h2>
+
+                <!-- Form to submit stock sale -->
+                <form method="POST" action="{{ url_for('sell_stocks') }}">
+                    <!-- Dropdown for selecting the stock to sell -->
+                    <div class="mb-3">
+                        <label for="stock" class="form-label">Current Selected Stock</label>
+                        <input type="text" class="form-control" value={{ stockToAction }} readonly id="stock_ticker" name="stock_ticker">
+                    </div>
+
+                    <!-- Display current stock details (read-only) -->
+                    <div class="row">
+                        <div class="col">
+                            <label>Total Current Stocks</label>
+                            <input type="text" class="form-control" value={{ ownedCount }} readonly>
+                        </div>
+                        <div class="col">
+                            <label>Current Stock Market Value</label>
+                            <input type="text" class="form-control" value={{ summedValue }} readonly>
+                        </div>
+                    </div>
+
+                    <!-- Input for number of stocks to sell -->
+                    <div class="mt-3">
+                        <label for="num_stocks" class="form-label">Number of Stocks to Sell</label>
+                        <input type="number" class="form-control" id="num_stocks" name="num_stocks" placeholder="Enter the number of stocks" min="1" max = {{ ownedCount }} step="1">
+                    </div>
+
+                    <!-- Sell button -->
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary mt-3">Sell</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+

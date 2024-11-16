@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Add Stock Page{% endblock %}
+
+{% block content %}
+<style>
+    /* Reusing the custom card styles from the contact page */
+    .card {
+        background-color: #f8f9fa;
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Box shadow for depth */
+        margin-bottom: 30px; /* Adds space below the card */
+        transition: none; /* Disable hover transition effects */
+    }
+
+    /* Ensures no hover effect for the card */
+    .card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Same shadow, no changes */
+        transform: none; /* Prevents any scaling or movement on hover */
+    }
+</style>
+
+<!-- Main content for the admin add stock page -->
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="text-center">Add New Stock</h2>
+
+                <!-- Admin add stock form -->
+                <form method="POST" action="{{ url_for('admin_add_stock') }}">
+                    <!-- Stock Name input field -->
+                    <div class="mb-3">
+                        <label for="StockName" class="form-label">Stock Name</label>
+                        <input type="text" class="form-control" id="stockName" name="stockName" 
+                               placeholder="Enter the name of the stock" required>
+                    </div>
+
+                    <!-- Stock Ticker input field -->
+                    <div class="mb-3">
+                        <label for="StockTicker" class="form-label">Stock Ticker</label>
+                        <input type="text" class="form-control" id="stockTicker" name="stockTicker" 
+                               placeholder="Enter the ticker symbol of the stock" required>
+                    </div>
+
+                    <!-- Stock Price input field -->
+                    <div class="mb-3">
+                        <label for="StockPrice" class="form-label">Initial Stock Price</label>
+                        <input type="number" class="form-control" id="stockPrice" name="stockPrice" 
+                               placeholder="Enter the initial price of the stock" step="0.01" required>
+                    </div>
+
+                    <!-- Stock Count input field -->
+                    <div class="mb-3">
+                        <label for="StockCount" class="form-label">Stock Quantity</label>
+                        <input type="number" class="form-control" id="stockCount" name="stockCount" 
+                               placeholder="Enter the quantity of stocks" required>
+                    </div>
+
+                    <!-- Submit button -->
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary mt-3">Add Stock</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

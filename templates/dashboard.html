@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+<!-- Extending the base template for layout consistency -->
+
+{% block title %}Dashboard{% endblock %}
+<!-- Setting the page title to "Dashboard" -->
+
+{% block content %}
+<style>
+    /* Styling for the card elements */
+    .card {
+        background-color: #f8f9fa;
+        border-radius: 10px; /* Rounded corners for cards */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+        margin-bottom: 30px; /* Space below the card */
+        transition: none; /* Disable hover effects */
+    }
+    .card-body {
+        padding: 0px; /* Adjust padding to reduce card height */
+    }
+
+    /* Prevent movement or effects on hover */
+    .card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Keep shadow consistent */
+        transform: none; /* Prevent scaling or movement */
+    }
+
+    /* Set widths for table columns to align data properly */
+    th:nth-child(1), td:nth-child(1) { width: 10%; } /* Ticker */
+    th:nth-child(2), td:nth-child(2) { width: 15%; } /* Price */
+    th:nth-child(3), td:nth-child(3) { width: 15%; } /* Volume */
+    th:nth-child(4), td:nth-child(4) { width: 20%; } /* Market Cap */
+    th:nth-child(5), td:nth-child(5) { width: 15%; } /* Opening Price */
+    th:nth-child(6), td:nth-child(6) { width: 15%; } /* High */
+    th:nth-child(7), td:nth-child(7) { width: 10%; } /* Low */
+</style>
+
+<!-- Main content of the dashboard -->
+<div class="container mt-4">
+    <div class="row">
+        <!-- Profile Summary (Left Sidebar) -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <!-- Placeholder for profile picture -->
+                    <img src="https://via.placeholder.com/100" alt="Profile Icon" class="img-fluid rounded-circle mb-3">
+                    <h4>{{ username }}</h4> <!-- Display username dynamically -->
+                    <p>Current Cash: ${{ cash }}</p> <!-- Display current cash -->
+                    <p>Portfolio Value: ${{totalPortfolioValue}}</p>
+                    
+
+                    <!-- User Settings button -->
+                    <a class="btn btn-outline-primary w-100 mt-3" href="{{ url_for('user_settings') }}">
+                        User Settings
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard (Center Section) -->
+         
+        <div class="col-md-6">
+            <!-- Stock overview chart section -->
+            <div class="card mt">
+                <div class="card-body">
+                    <h5 class="text-center">Stock Overview</h5>
+                    <canvas id="stocksChart" style="height: 200px;"></canvas> <!-- ChartJS for displaying stock data -->
+                </div>
+            </div>
+
+            <!-- Action buttons for buying stocks and adding cash -->
+            <div class="row mt-4">
+                <!-- Add Cash button -->
+                <div class="col">
+                    <a class="btn btn-success w-100" href="{{ url_for('add_cash') }}">
+                        <i class="fas fa-dollar-sign"></i> Deposit Cash
+                    </a>
+                </div>
+                <div class="col">
+                    <a class="btn btn-success w-100" href="{{ url_for('withdraw_cash') }}">
+                        <i class="fas fa-dollar-sign"></i> Withdraw Cash
+                    </a>
+                </div>
+            </div> 
+            {% if isMarketOpen %}
+            {% else %}
+            <div class="row mt-4">
+                <a class="btn btn-danger w-100">Market is closed!</a>
+            </div>
+            {% endif %}
+            <div class="row mt-4">
+                <div class="col-md-12 card mt-8">
+                    <div class="card-body">
+                        <h5 class="text-center">Available Stocks</h5>
+                        <div class="table-responsive">
+                            <!-- Table displaying available stock data -->
+                            <table class="table table-striped table-bordered w-100">
+                                <thead>
+                                    <tr>
+                                        <th>Ticker</th>
+                                        <th>Price</th>
+                                        <th>Volume</th>
+                                        <th>Market Cap</th>
+                                        <th>Opening Price</th>
+                                        <th>Click to buy</th>
+                                        <th>Click to Sell</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for stock in allstocks %}
+                                <tr>
+                                    <td>{{stock.stock_ticker}}</td>
+                                    <td>{{stock.stock_price}}</td>
+                                    <td>{{stock.stock_quantity}}</td>
+                                    <td>{{stock.stock_price}}</td>
+                                    <td>{{stock.stock_price}}</td>
+                                    {% if isMarketOpen %}
+                                    <td><a href={{ url_for('buy_stocks',stock=stock.stock_ticker)}}>Buy</a></td>
+                                    <td><a href={{ url_for('sell_stocks',stock=stock.stock_ticker)}}>Sell</a></td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stocks Overview Section (Right Sidebar) -->
+        <div class="col-md-3 ml-n3">
+            <div class="col-md-12 card mt-8">
+                <div class="card-body">
+                    <h5 class="text-center">Transaction Log</h5>
+                    <div class="table-responsive">
+                        <!-- Table displaying available stock data -->
+                        <table class="table table-striped table-bordered w-100">
+                            <thead>
+                                <tr>
+                                    <th>Ticker</th>
+                                    <th>Price</th>
+                                    <th>Volume</th>
+                                    <th>buy/sold</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for transaction in transcationLog %}
+                            <tr>
+                                <td>{{transaction.stock_ticker}}</td>
+                                <td>{{transaction.price_at_purchase}}</td>
+                                <td>{{transaction.purchase_quantity}}</td>
+                                <!--<td>{{transaction.sell_buy}}</td> -->
+                                {% if transaction.sell_buy == True %}
+                                <td>Buy</td>
+                                {% else %}
+                                <td>Sell</td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const lables = {{ownedStocklables | tojson}};
+    const data = {
+        labels: lables,
+        datasets: [{
+            label: 'Stocks',
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(0, 0, 0)',
+            data: {{ data | tojson}}
+        }]
+    };
+    const config = {
+        type: 'bar',
+        data: data,
+        options: { maintainAspectRatio: true}
+    };
+
+    const myChart = new Chart(
+        document.getElementById('stocksChart'),
+        config
+    );
+</script>
+{% endblock %}
+<!-- End of content block -->
+
+
+
+
+
+
+
+
+

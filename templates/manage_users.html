@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow-x: auto; /* Allow horizontal scrolling if necessary */
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input[type="text"] {
+            width: 100%; /* Make input fields take the full width of the cell */
+            box-sizing: border-box; /* Ensure padding doesn't affect width */
+        }
+        input[type="checkbox"] {
+            width: auto; /* Keep checkboxes at their natural size */
+        }
+        button {
+            margin-top: 10px; /* Add space above the button */
+            padding: 10px 20px; /* Add padding to the button */
+            cursor: pointer; /* Change cursor to pointer on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Manage Users</h1>
+    <form method="POST" action="{{ url_for('manage_users') }}">
+        <table>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Admin</th>
+                    <th>Locked</th>
+                    <th>Cash</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <!-- Hidden field to pass original user_email to backend -->
+                    <input type="hidden" name="user_email_{{ user.user_email }}" value="{{ user.user_email }}" />
+                    <td id="email_{{ user.user_email }}">
+                        <input type="text" name="email_{{ user.user_email }}" value="{{ user.user_email }}" />
+                    </td>
+                    <td id="fname_{{ user.user_email }}">
+                        <input type="text" name="fname_{{ user.user_email }}" value="{{ user.fname }}" />
+                    </td>
+                    <td id="lname_{{ user.user_email }}">
+                        <input type="text" name="lname_{{ user.user_email }}" value="{{ user.lname }}" />
+                    </td>
+                    <td>
+                        <input type="checkbox" id="isadmin_{{ user.user_email }}" name="isadmin_{{ user.user_email }}" value="1" {% if user.isadmin %}checked{% endif %}>
+                    </td>
+                    <td>
+                        <input type="checkbox" id="islocked_{{ user.user_email }}" name="islocked_{{ user.user_email }}" value="1" {% if user.islocked %}checked{% endif %}>
+                    </td>
+                    <td id="cash_{{ user.user_email }}">
+                        <input type="text" name="cash_{{ user.user_email }}" value="{{ user.cash }}" />
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Save Changes</button> <!-- This button saves all modified data -->
+    </form>
+</body>
+</html>
+{% endblock %}

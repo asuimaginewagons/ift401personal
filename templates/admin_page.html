@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Admin Page{% endblock %}
+
+{% block content %}
+<div class="container mt-4 text-center">
+    <h1>Admin Control Panel</h1>
+    <p>Welcome, admin! Manage the platform using the controls below.</p>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Manage Users Section -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4><a href="{{ url_for('manage_users') }}">Manage Users</a></h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manage Stocks Section -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4><a href="{{ url_for('manage_stocks') }}">Manage Stocks</a></h4>
+                    <h4><a href="{{ url_for('admin_add_stock') }}">Add Stock</a></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Review Transactions Section -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4><a href="{{ url_for('review_transactions') }}">Review Transactions</a></h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generate Reports Section -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4><a href="{{ url_for('generate_reports') }}">Generate Reports</a></h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Site Settings Section -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h4><a href="{{ url_for('site_settings') }}">Site Settings</a></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

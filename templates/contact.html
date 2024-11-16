@@ -1,0 +1,59 @@
+{% extends 'base.html' %} 
+<!-- Extending the base.html template -->
+
+{% block title %}Contact Us{% endblock %}
+<!-- Setting the page title to "Contact Us" -->
+
+{% block content %}
+<style>
+    /* Custom styles for the contact card */
+    .card {
+        background-color: #f8f9fa;
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Box shadow for depth */
+        margin-bottom: 30px; /* Adds space below the card */
+        transition: none; /* Disable hover transition effects */
+    }
+
+    /* Ensures no hover effect for card */
+    .card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Same shadow, no changes */
+        transform: none; /* Prevents any scaling or movement on hover */
+    }
+</style>
+
+<!-- Main content for the contact page -->
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="text-center">Contact Us</h2>
+
+                <!-- Contact form with POST method, submits to the contact route -->
+                <form method="POST" action="{{ url_for('contact') }}">
+                    <!-- Name input field -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Enter Your Name</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+                    </div>
+                    <!-- Email input field -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Enter Your Email</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
+                    </div>
+                    <!-- Submit button centered below the form fields -->
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<!-- End of content block -->
+
+
+
+
+

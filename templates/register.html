@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+<!-- Extending the base template for consistent layout -->
+
+{% block title %}Register{% endblock %}
+<!-- Setting the page title to "Register" -->
+
+{% block content %}
+<style>
+    /* Styling for the registration card */
+    .card {
+        background-color: #f8f9fa;
+        border-radius: 10px; /* Rounded corners for the card */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+        margin-bottom: 30px; /* Space below the card */
+        transition: none; /* Disable hover transition */
+    }
+
+    /* Prevent movement or changes on hover */
+    .card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Maintain shadow consistency */
+        transform: none; /* Prevent any movement or scaling */
+    }
+</style>
+
+<!-- Main container for the registration form -->
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <!-- Card containing the registration form -->
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="text-center">Register</h2>
+
+                <!-- Registration form using POST method to send data to the server -->
+                <form method="POST" action="{{ url_for('register') }}">
+                    <!-- Username input field -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+
+                    <!-- Password input field -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+
+                    <!-- Register button centered below the form -->
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary mt-3">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<!-- End of content block -->
+

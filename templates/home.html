@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+<!-- Extending the base template for consistent layout -->
+
+{% block title %}Login{% endblock %}
+<!-- Setting the page title to "Login" -->
+
+{% block content %}
+<style>
+    /* Card styling for the login form */
+    .card {
+        background-color: #f8f9fa;
+        border-radius: 10px; /* Rounded corners for the card */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+        margin-bottom: 30px; /* Space below the card */
+    }
+
+    /* Prevent any hover effects */
+    .card:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Maintain shadow */
+        transform: none; /* Disable any movement or scaling */
+    }
+</style>
+
+<!-- Main content container for the login form -->
+<div class="container mt-2"> <!-- Adjusted margin-top for more space -->
+    <div class="row justify-content-center">
+        <!-- Login form card -->
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="text-center">Welcome to SUPERSTOX</h2>
+                <p class="text-center mb-4">Please log in to manage your stocks.</p>
+
+                <!-- Login form with POST method to send email and password -->
+                <form method="POST" action="{{ url_for('login') }}">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <!-- Input field for the user's email -->
+                        <input type="email" class="form-control" id="email" name="email" 
+                               placeholder="Enter your email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <!-- Input field for the user's password -->
+                        <input type="password" class="form-control" id="password" name="password" 
+                               placeholder="Enter your password" required>
+                    </div>
+
+                    <!-- "Remember Me" checkbox option -->
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
+                        <label class="form-check-label" for="remember_me">Remember me</label>
+                    </div>
+
+                    <!-- Sign In button centered below the form -->
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary mt-3">Sign In</button>
+                    </div>
+
+                    <!-- Forgot password link -->
+                    <div class="text-center mt-3">
+                        <a href="{{ url_for('forgot_password') }}">Forgot password?</a>
+                    </div>
+                </form>
+
+                <!-- Register link for new users -->
+                <div class="text-center mt-3">
+                    <p>Not a member? <a href="{{ url_for('register') }}">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<!-- End of content block -->
+
+
+
+
+
+
+

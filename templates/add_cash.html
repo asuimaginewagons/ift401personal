@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+<!-- Extending the base template (base.html) for consistent layout -->
+
+{% block title %}Add Cash{% endblock %}
+<!-- Setting the page title to "Add Cash" -->
+
+{% block content %}
+<style>
+    /* Remove hover effects on all cards */
+    .card {
+        transition: none; /* No hover transitions */
+        box-shadow: none; /* No default shadow unless specified */
+    }
+
+    /* Profile summary card styling */
+    .profile-summary {
+        background-color: #f8f9fa; /* Light background */
+        border-radius: 10px; /* Rounded corners for the card */
+        padding: 20px; /* Add padding inside the card */
+        text-align: center; /* Center-align the text */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a static shadow */
+        transition: none; /* Disable hover effects */
+    }
+
+    .profile-summary:hover {
+        /* Ensure no hover changes */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Maintain the same shadow */
+        transform: none; /* Prevent any scaling or movement on hover */
+    }
+
+    .profile-summary img {
+        border-radius: 50%; /* Round profile picture */
+        border: 2px solid #007bff; /* Add a blue border around the image */
+    }
+
+    /* Styling for profile name */
+    .profile-summary h5 {
+        font-size: 1.25rem; /* Larger font size for the user's name */
+        color: #333; /* Dark text color for the name */
+        margin-top: 10px; /* Space between the profile picture and name */
+    }
+
+    /* Styling for the displayed cash amount */
+    .profile-summary p {
+        font-size: 1.1rem; /* Larger font size for the cash */
+        color: #007bff; /* Blue color matching the theme */
+    }
+
+    /* Large icon representing the user profile */
+    .profile-summary .profile-icon {
+        font-size: 3rem; /* Large icon size */
+        color: #007bff; /* Blue color matching the primary theme */
+    }
+
+    /* Styling for the card header */
+    .profile-summary .card-header {
+        background-color: #1f6fa5; /* Matches the primary button color */
+        color: white; /* White text for visibility */
+        font-size: 1.2rem; /* Larger font size for the header */
+        border-bottom: none; /* Remove the bottom border */
+        border-radius: 10px 10px 0 0; /* Rounded top corners */
+    }
+
+    /* Form section styling */
+    .add-cash-form {
+        margin-top: 20px; /* Adds margin above the form */
+        max-width: 650px; /* Set max width for the form */
+        margin-left: 40px; /* Adjusts form position */
+        margin-right: auto; /* Centers the form */
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Profile section (Left side) -->
+        <div class="col-md-4">
+            <div class="card profile-summary">
+                <div class="card-header">Profile</div> <!-- Profile card header -->
+                <div class="card-body text-center">
+                    <!-- Placeholder user profile icon -->
+                    <i class="fas fa-user-circle profile-icon"></i> <!-- User profile icon -->
+                    <h5>{{ username }}</h5> <!-- Display the user's name dynamically -->
+                    <p>Current Cash: ${{ current_cash }}</p> <!-- Display the user's current cash -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Cash form (Right side) -->
+        <div class="col-md-6 add-cash-form">
+            <div class="card">
+                <div class="card-header">Add Cash</div> <!-- Add Cash card header -->
+                <div class="card-body">
+                    <!-- Form for adding cash, uses POST method to send data to the server -->
+                    <form method="POST" action="{{ url_for('add_cash') }}">
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount to Deposit</label>
+                            <!-- Input group with a dollar sign prepended -->
+                            <div class="input-group">
+                                <span class="input-group-text">$</span> <!-- Dollar sign before input field -->
+                                <input type="number" class="form-control" id="amount" name="amount" 
+                                       placeholder="Enter amount" step="0.01" required> <!-- Input for cash amount -->
+                            </div>
+                        </div>
+                        <!-- Submit button centered below the form -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary" style="width: 150px;">Accept</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<!-- End of content block -->
+
+
+

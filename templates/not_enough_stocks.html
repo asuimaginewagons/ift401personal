@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+<!-- Extending the base template for consistent layout -->
+
+{% block title %}Not Enough Stocks{% endblock %}
+<!-- Setting the page title to "Not Enough Stocks" -->
+
+{% block content %}
+<!-- Main container for the "Not Enough Stocks" message -->
+<div class="container">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6 text-center">
+            <!-- Display a message indicating insufficient stocks -->
+            <h2>Not Enough Stocks</h2>
+            <p>You do not have enough stocks to complete this transaction.</p>
+
+            <!-- Options to either add cash or cancel the transaction -->
+            <div class="mt-4">
+                <a href="{{ url_for('add_cash') }}" class="btn btn-success">Add Cash</a> <!-- Button to add cash -->
+                <a href="{{ url_for('sell_stocks') }}" class="btn btn-secondary">Cancel</a> <!-- Button to cancel -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<!-- End of content block -->
+

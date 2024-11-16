@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Site Settings{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Site Settings</h2>
+
+    <!-- Form for Market Holidays -->
+    <h3>Market Holidays</h3>
+    <form method="POST" action="{{ url_for('save_holiday_settings') }}">
+        <div class="mb-3">
+            <label for="holiday_date" class="form-label">Holiday Date</label>
+            <input type="date" class="form-control" id="holiday_date" name="holiday_date" required>
+        </div>
+
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="market_closed" name="market_closed" onchange="toggleHours()">
+            <label for="market_closed" class="form-check-label">Market Closed</label>
+        </div>
+
+        <!-- Opening and Closing Hours (Hidden if Market is Closed) -->
+        <div id="hours_section">
+            <div class="mb-3">
+                <label for="holiday_start_time" class="form-label">Holiday Start Time</label>
+                <input type="time" class="form-control" id="holiday_start_time" name="holiday_start_time">
+            </div>
+            <div class="mb-3">
+                <label for="holiday_end_time" class="form-label">Holiday End Time</label>
+                <input type="time" class="form-control" id="holiday_end_time" name="holiday_end_time">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Holiday</button>
+    </form>
+
+    <!-- JavaScript to toggle hour fields -->
+    <script>
+        function toggleHours() {
+            const hoursSection = document.getElementById('hours_section');
+            const isClosed = document.getElementById('market_closed').checked;
+            hoursSection.style.display = isClosed ? 'none' : 'block';
+        }
+    </script>
+
+    <!-- Form for General Market Hours -->
+    <h3 class="mt-4">General Market Hours</h3>
+    <form method="POST" action="{{ url_for('save_market_hours') }}">
+        <div class="mb-3">
+            <label for="market_start_time" class="form-label">Market Start Time</label>
+            <input type="time" class="form-control" id="market_start_time" name="market_start_time" value="09:30" required>
+        </div>
+        <div class="mb-3">
+            <label for="market_end_time" class="form-label">Market End Time</label>
+            <input type="time" class="form-control" id="market_end_time" name="market_end_time" value="16:30" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Market Hours</button>
+    </form>
+
+    <!-- Display Closed Market Holidays -->
+    <h3 class="mt-4">The market is closed on the following dates:</h3>
+    {% if closed_holidays %}
+        <ul class="mt-3">
+            {% for holiday in closed_holidays %}
+                <li>{{ holiday.date.strftime('%m-%d-%Y') }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No holidays where the market is closed.</p>
+    {% endif %}
+
+    <!-- Display Modified Holiday Hours -->
+    <h3 class="mt-4">Holiday hours are in effect for these dates:</h3>
+    {% if modified_holidays %}
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for holiday in modified_holidays %}
+            <tr>
+                <td>{{ holiday.date.strftime('%m-%d-%Y') }}</td>
+                <td>{{ holiday.openHour }}</td>
+                <td>{{ holiday.closeHour }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No holidays with modified hours.</p>
+    {% endif %}
+</div>
+{% endblock %}

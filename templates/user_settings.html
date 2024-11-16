@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+<!-- Extending the base template for consistent layout -->
+
+{% block title %}User Settings{% endblock %}
+<!-- Setting the page title to "User Settings" -->
+
+{% block content %}
+<!-- Main container for the User Settings form -->
+<div class="container d-flex justify-content-center align-items-start" style="margin-top: 50px;"> <!-- Center the card -->
+    <div class="card" style="max-width: 400px; width: 100%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+        <div class="card-header text-center">
+            <h2>User Settings</h2> <!-- Heading for the user settings form -->
+        </div>
+        <div class="card-body">
+            <!-- Form for updating user email and password, using POST method -->
+            <form method="POST" action="{{ url_for('user_settings') }}">
+                <!-- Input field for changing email -->
+                <div class="form-group mb-3">
+                    <label for="email"><i class="fas fa-envelope"></i> Change Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your new email" required>
+                </div>
+                <!-- Input field for changing password -->
+                <div class="form-group mb-3">
+                    <label for="password"><i class="fas fa-lock"></i> Change Password</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your new password" required>
+                </div>
+                <!-- Submit button for saving changes -->
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+<!-- End of content block -->
+
+
+
+
+
