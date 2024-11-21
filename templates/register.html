@@ -21,7 +21,11 @@
         transform: none; /* Prevent any movement or scaling */
     }
 </style>
-
+{% if message %}
+    <script>
+        alert("Success")
+    </script>
+{% endif %}
 <!-- Main container for the registration form -->
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -36,6 +40,14 @@
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstname" name="firstname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastname" name="lastname" required>
                     </div>
 
                     <!-- Password input field -->

@@ -96,6 +96,7 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # Grab email and password from webpage
+    message=request.args.get('message')
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
@@ -113,20 +114,26 @@ def login():
         else:
             print('Login failed')
             flash('Login failed. Check your email or password.', 'danger')
-            return redirect(url_for('login'))
-    return render_template('home.html')
+            error = 'Invalid Password'
+            #return redirect(url_for('login'))
+            return render_template('home.html', error=error)
+    return render_template('home.html',message=message)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    message=request.args.get('message')
     if request.method == 'POST':
         username = request.form['username']
         EnteredPassword = request.form['password']
+        fName = request.form['firstname']
+        lName = request.form['lastname']
+
         HashedPassword = generate_password_hash(EnteredPassword)
         userObj = Users(
             user_email=username,
             password=HashedPassword,
-            fname="dne",
-            lname="dne",
+            fname=fName,
+            lname=lName,
             isadmin=False,
             cash=0,
             islocked=False
@@ -136,13 +143,13 @@ def register():
             db.session.add(userObj)
             print('User added successfully') # Debug message
             db.session.commit()
-            flash(f'Registration successful for {username}', 'success')
-            return redirect(url_for('home'))
+            return redirect(url_for('home',message="success"))
         except Exception as e:
             db.session.rollback()
             print(f'Error adding user: {e}') # Debug message
             flash('Registration failed. Please try again.', 'danger')
-    return render_template('register.html')
+            return render_template('register.html',message="failed to create account")
+    return render_template('register.html',message=message)
 
 @app.route('/about')
 def about():
@@ -155,6 +162,7 @@ def contact():
 @app.route('/dashboard')
 @login_required
 def dashboard_view():
+    success=request.args.get('message')
     username = current_user.user_email  # Use the logged-in user's email
     user = db.session.query(Users).filter(Users.user_email == username).first()
     cash = user.cash
@@ -189,6 +197,17 @@ def dashboard_view():
     MarketTodayHours = db.session.query(Market).filter(Market.date == todayFormatted).first()
     nowHour = int(time.strftime("%H"))
     print("Market is open:", MarketTodayHours.isOpen,". Market open hour:,",MarketTodayHours.openHour,". Market close hour:",MarketTodayHours.closeHour,". Now Hour: ",nowHour)
+
+    today = datetime.now()
+    # Format the date as "YYYY-MM-DD"
+    formatted_date = today.strftime("%Y-%m-%d")
+    marketToday = db.session.query(Market).filter(Market.date == formatted_date).first()
+    nowHour = today.hour
+
+    if (marketToday.isOpen and nowHour < marketToday.closeHour and nowHour > marketToday.openHour):
+        print("new market hours are open")
+
+    
     if (MarketTodayHours.isOpen and nowHour > int(MarketTodayHours.openHour) and nowHour < MarketTodayHours.closeHour):
         print("today is open")
         isMarketOpen = True
@@ -196,7 +215,7 @@ def dashboard_view():
         isMarketOpen = False
 
 
-    return render_template('dashboard.html', username=username, cash=cash, allstocks=AllMarketStocks, ownedStocklables=listOfUserStock, data=stockData,transcationLog=userTransactionLog,totalPortfolioValue=totalPortfolioValue,isMarketOpen=isMarketOpen)
+    return render_template('dashboard.html', username=username, cash=cash, allstocks=AllMarketStocks, ownedStocklables=listOfUserStock, data=stockData,transcationLog=userTransactionLog,totalPortfolioValue=totalPortfolioValue,isMarketOpen=isMarketOpen,success=success)
 
 @app.route('/buy_stocks', methods=['GET', 'POST'])
 @login_required
@@ -261,7 +280,7 @@ def buy_stocks():
             db.session.add(NewStockInventory)
             db.session.commit()
 
-            return redirect(url_for('dashboard_view'))
+            return redirect(url_for('dashboard_view',message="IT worked"))
         else:
             ##user already has stock, bump count
 
@@ -286,7 +305,7 @@ def buy_stocks():
             setattr(user_inventoryObj, 'user_quantity', user_inventoryObj.user_quantity + int(num_stocks))
             db.session.commit()
 
-            return redirect(url_for('dashboard_view'))
+            return redirect(url_for('dashboard_view',message="IT worked"))
     return "Buy Stocks page (To be implemented)"
 
 @app.route('/add_cash', methods=['GET', 'POST'])
@@ -302,7 +321,7 @@ def add_cash():
         flash(f'Success! ${amount} has been added to your account. Your new balance is ${new_cash:.2f}.', 'success')
         setattr(userObj, 'cash',new_cash)
         db.session.commit()
-        return redirect(url_for('dashboard_view'))
+        return redirect(url_for('dashboard_view',message="IT worked"))
     if request.method == 'GET':
         #get current cash
 
@@ -322,7 +341,7 @@ def withdraw_cash():
         new_cash = Decimal(current_cash) - Decimal(amount)
         setattr(userObj, 'cash',new_cash)
         db.session.commit()
-        return redirect(url_for('dashboard_view'))
+        return redirect(url_for('dashboard_view',message="IT worked"))
 
     return "it broke"
 
@@ -382,7 +401,7 @@ def sell_stocks():
         db.session.commit()
         print("added transaction log")
 
-        return redirect(url_for('dashboard_view'))
+        return redirect(url_for('dashboard_view',message="IT worked"))
 
     if request.method == 'GET':
         enteredStock = request.args.get('stock')
@@ -514,11 +533,11 @@ def review_transactions():
        return "ADMIN ACCESS ONLY", 403
     if request.method == 'GET':
         userTransactionLog = db.session.query(User_Transactions).all()
-        return render_template('review_transactions.html',transcationLog=userTransactionLog)
+        return render_template('review_transactions.html',transcationLog=userTransactionLog,searchPlaceholder="Enter the email address of a user here")
     if request.method == 'POST':
         userEmail = request.form['email']
         userTransactionLog = db.session.query(User_Transactions).filter(User_Transactions.user_email == userEmail).all()
-        return render_template('review_transactions.html',transcationLog=userTransactionLog)
+        return render_template('review_transactions.html',transcationLog=userTransactionLog,searchPlaceholder=userEmail)
     return render_template('review_transactions.html',transcationLog=userTransactionLog)
 
 
@@ -546,7 +565,13 @@ def site_settings():
         (Market.openHour != 9 or Market.closeHour != 16)
     ).all()
 
-    return render_template('site_settings.html', closed_holidays=closed_holidays, modified_holidays=modified_holidays)
+    today = datetime.now()
+    # Format the date as "YYYY-MM-DD"
+    formatted_date = today.strftime("%Y-%m-%d")
+    marketToday = db.session.query(Market).filter(Market.date == formatted_date).first()
+    print(marketToday.openHour)
+
+    return render_template('site_settings.html', closed_holidays=closed_holidays, modified_holidays=modified_holidays,marketOpen=marketToday.openHour,marketClose=marketToday.closeHour)
 
 
 @app.route('/admin/site_settings/save_holiday_settings', methods=['POST'])

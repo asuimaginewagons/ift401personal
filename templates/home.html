@@ -20,7 +20,11 @@
         transform: none; /* Disable any movement or scaling */
     }
 </style>
-
+{% if message %}
+    <script>
+        alert("{{ message }}")
+    </script>
+{% endif %}
 <!-- Main content container for the login form -->
 <div class="container mt-2"> <!-- Adjusted margin-top for more space -->
     <div class="row justify-content-center">

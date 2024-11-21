@@ -12,23 +12,39 @@
             <!-- About Us Heading -->
             <h2>About Us</h2>
 
-
-            <!-- Section describing the company's mission and vision -->
-            <div class="about-text mb-4">
-                <h4>Our Mission</h4>
-                <p>"Our mission is to empower users with a seamless, secure, and efficient platform to buy, sell, and manage stocks. We strive to provide real-time insights, user-friendly tools, and comprehensive financial information to help users make informed investment decisions with confidence."</p>
-
-                <h4>Our Vision</h4>
-                <p>"Our vision is to become the go-to platform for investors of all experience levels by offering an innovative, transparent, and accessible stock trading experience. We aim to create a trusted environment where users can grow their financial knowledge, build wealth, and achieve their investment goals with ease."</p>
+            <!-- Meet Our Team Section -->
+            <div class="team-section d-flex flex-wrap justify-content-center mt-5 gap-4">
+                <div class="team-member text-center">
+                    <img src="{{ url_for('static', filename='greg.jpg') }}" alt="Gregory Gerlach" class="img-fluid rounded-circle" style="width: 300px; height: 300px;">
+                    <h4 class="mt-3">Gregory Gerlach</h4>
+                    <p>Team Lead and Middleware Engineer</p>
+                </div>
+                <div class="team-member text-center">
+                    <img src="{{ url_for('static', filename='default-pfp.webp') }}" alt="Anthony Smith" class="img-fluid rounded-circle" style="max-width: 300px; height: auto;">
+                    <h4 class="mt-3">Anthony Smith</h4>
+                    <p>UI/UX Lead and Front End Engineer</p>
+                </div>
+                <div class="team-member text-center">
+                    <img src="{{ url_for('static', filename='dj-alt.jpg') }}" alt="DJ" class="img-fluid rounded-circle" style="max-width: 300px; height: auto;">
+                    <h4 class="mt-3">DJ</h4>
+                    <p></p>
+                </div>
+                <div class="team-member text-center">
+                    <img src="{{ url_for('static', filename='fx-pfp.webp') }}" alt="F.X. Patterson" class="img-fluid rounded-circle" style="max-width: 300px; height: auto;">
+                    <h4 class="mt-3">F.X. Patterson</h4>
+                    <p>Database Lead and Back End Engineer</p>
+                </div>
             </div>
 
-            <!-- Meet Our Team Section -->
-            
+            <!-- Section describing the company's mission and vision -->
+            <div class="about-text mb-4 mt-5">
+                <h4>Our Mission</h4>
+                <p>"Our mission is to empower our company with a seamless, secure, and efficient platform to buy, sell, and manage stocks. We strive to provide a realistic environment for brokers to grow their knowledge."</p>
+
+                <h4>Our Vision</h4>
+                <p>"Our vision is to become the go-to platform for stock brokers of all experience levels by offering a straightforward and accessible stock trading experience. We aim to create a learning environment where brokers can grow their financial knowledge, build wealth, and achieve in their roles with ease."</p>
+            </div>
         </div>
     </div>
 </div>
 {% endblock %}
-<!-- End of content block -->
-
-
-
